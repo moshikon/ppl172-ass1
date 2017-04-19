@@ -1,5 +1,5 @@
 
-const invokeN1 = (f, n) =>
+const invokeN1 = (f, n) => 
     n === 0 ? (x) => x : (x) => f(invokeN1(f,n-1)(x))
 
 interface Tree<T> {
@@ -22,7 +22,7 @@ interface Tree<T> {
 
 const makeLeaf : <T>(v:T)=>Tree<T> =
     v => {return {root: v, children:[]};}
-
+    
 const makeTree : <T>(v:T, children:Tree<T>[])=>Tree<T> =
     (v, children) => { return {root:v, children:children}}
 
@@ -31,7 +31,7 @@ const treeRoot : <T>(t: Tree<T>)=>T =
 
 const treeChildren: <T>(t: Tree<T>)=>Tree<T>[] =
     t => t.children;
-
+    
 const treeLeaf : <T>(t: Tree<T>)=>boolean =
     t => t.children.length === 0;
 
@@ -40,10 +40,10 @@ treeLeaf(makeLeaf(5))
 import {map, reduce} from 'ramda'
 
 const treeHeight : <T>(t:Tree<T>)=>number =
-    t => treeLeaf(t) ?
-            0 :
+    t => treeLeaf(t) ? 
+            0 : 
             1 + reduce(Math.max, 0, map(treeHeight, treeChildren(t)));
-
+            
 treeHeight(makeTree(1, [makeLeaf(2), makeLeaf(3)]))
 
 treeHeight({ root: 1, children: [ { root: 2, children: [] }, { root: 3, children: [{root: 4, children:[]}] } ] })
@@ -81,14 +81,14 @@ let newTree = treeMap((x:number) => x*x, tree4)
 assert.deepEqual(newTree.children[1].children[1].root, 49 , "test4");
 "all ok";
 
-// Answer 2.2
+// Answer 2.2 
 const treeForEachDF: <T>(f: Command<T>, tree: Tree<T>)=>void =
     (f, tree) => {
               if (treeLeaf(tree)){
                 f(treeRoot(tree));
               }else{
-                treeChildren(tree).forEach((tree) => treeForEachDF(f, tree));
                 f(treeRoot(tree));
+                treeChildren(tree).forEach((tree) => treeForEachDF(f, tree));
               }
             }
 
@@ -100,7 +100,7 @@ assert.ok(i === 1)
 
 // treeForEachDF test 2
 let tmp ="DFS - ";
-treeForEachDF((x) => {tmp=tmp+x}, makeTree("d!!",[makeTree("y ", [makeLeaf("ve"), makeLeaf("r")]) , makeTree("o", [makeLeaf("g"), makeLeaf("o")])]))
+treeForEachDF((x) => {tmp=tmp+x}, makeTree("v",[makeTree("e", [makeLeaf("ry "), makeLeaf("g")]) , makeTree("o", [makeLeaf("o"), makeLeaf("d!!")])]))
 assert.ok(tmp === "DFS - very good!!")
 "all ok"
 
@@ -119,16 +119,16 @@ assert.ok(k === 7)
 
 const treeReduceDF: <T1,T2>(f: Accumulator<T1,T2>, init: T1, tree: Tree<T2>)=>T1 =
   (f, init, tree) =>
-        (treeLeaf(tree)?
+        (treeLeaf(tree))?
           f (init ,(treeRoot(tree))):
-          f (treeChildren(tree).reduce((x, tree) => treeReduceDF(f, x ,tree) , init) ,(treeRoot(tree))));
+          treeChildren(tree).reduce((x, tree) => treeReduceDF(f, x ,tree) , f (init ,(treeRoot(tree))));
 
 // treeReduceDF test 1
 assert.ok(6 === treeReduceDF<number, number>((x, y)=>x+y, 0, makeTree(1, [makeLeaf(2), makeLeaf(3)])))
 "all ok"
 
 // treeReduceDF test 2
-assert.ok("DFS - OK!" === treeReduceDF<string, string>((x, y)=>x+y, "DFS - ", makeTree("!", [makeLeaf("O"), makeLeaf("K")])))
+assert.ok("DFS - OK!" === treeReduceDF<string, string>((x, y)=>x+y, "DFS - ", makeTree("O", [makeLeaf("K"), makeLeaf("!")])))
 "all ok"
 
 // treeReduceDF test 3
@@ -169,7 +169,7 @@ interface TeMap {
 
 // Constructors
 // ============
-const makeTeString : ()=>TeString =
+const makeTeString : ()=>TeString = 
     () => { return {tag:"string"}}
 
 const makeTeNumber : ()=>TeNumber =

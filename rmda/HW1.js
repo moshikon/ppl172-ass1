@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var invokeN1 = function (f, n) {
     return n === 0 ? function (x) { return x; } : function (x) { return f(invokeN1(f, n - 1)(x)); };
 };
@@ -49,14 +49,14 @@ var tree4 = makeTree(1, [makeTree(2, [makeLeaf(3), makeLeaf(4)]), makeTree(5, [m
 var newTree = treeMap(function (x) { return x * x; }, tree4);
 assert.deepEqual(newTree.children[1].children[1].root, 49, "test4");
 "all ok";
-// Answer 2.2
+// Answer 2.2 
 var treeForEachDF = function (f, tree) {
     if (treeLeaf(tree)) {
         f(treeRoot(tree));
     }
     else {
-        treeChildren(tree).forEach(function (tree) { return treeForEachDF(f, tree); });
         f(treeRoot(tree));
+        treeChildren(tree).forEach(function (tree) { return treeForEachDF(f, tree); });
     }
 };
 // treeForEachDF test 1
@@ -66,7 +66,7 @@ assert.ok(i === 1);
 "all ok";
 // treeForEachDF test 2
 var tmp = "DFS - ";
-treeForEachDF(function (x) { tmp = tmp + x; }, makeTree("d!!", [makeTree("y ", [makeLeaf("ve"), makeLeaf("r")]), makeTree("o", [makeLeaf("g"), makeLeaf("o")])]));
+treeForEachDF(function (x) { tmp = tmp + x; }, makeTree("v", [makeTree("e", [makeLeaf("ry "), makeLeaf("g")]), makeTree("o", [makeLeaf("o"), makeLeaf("d!!")])]));
 assert.ok(tmp === "DFS - very good!!");
 "all ok";
 // treeForEachDF test 3
@@ -81,15 +81,15 @@ treeForEachDF(function () { ++k; }, tree);
 assert.ok(k === 7);
 "all ok";
 var treeReduceDF = function (f, init, tree) {
-    return (treeLeaf(tree) ?
+    return (treeLeaf(tree)) ?
         f(init, (treeRoot(tree))) :
-        f(treeChildren(tree).reduce(function (x, tree) { return treeReduceDF(f, x, tree); }, init), (treeRoot(tree))));
+        treeChildren(tree).reduce(function (x, tree) { return treeReduceDF(f, x, tree); }, f(init, (treeRoot(tree))));
 };
 // treeReduceDF test 1
 assert.ok(6 === treeReduceDF(function (x, y) { return x + y; }, 0, makeTree(1, [makeLeaf(2), makeLeaf(3)])));
 "all ok";
 // treeReduceDF test 2
-assert.ok("DFS - OK!" === treeReduceDF(function (x, y) { return x + y; }, "DFS - ", makeTree("!", [makeLeaf("O"), makeLeaf("K")])));
+assert.ok("DFS - OK!" === treeReduceDF(function (x, y) { return x + y; }, "DFS - ", makeTree("O", [makeLeaf("K"), makeLeaf("!")])));
 "all ok";
 // treeReduceDF test 3
 assert.ok(128 === treeReduceDF(function (x, y) { return x * y; }, 1, makeTree(2, [makeTree(2, [makeLeaf(2), makeLeaf(2)]), makeTree(2, [makeLeaf(2), makeLeaf(2)])])));
